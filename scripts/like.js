@@ -22,20 +22,15 @@ likeButtonArray.forEach((button, index) => {
 });
 
 function toggleIsLiked(heart, button) {
-  heart.classList.toggle('is-liked');
+  const isLiked = heart.classList.toggle('is-liked');
+  button.setAttribute('aria-pressed', String(isLiked));
+  heart.closest('.card__icon-button').setAttribute('aria-pressed', String(isLiked));
   setButtonText(heart, button);
 }
 
 function setButtonText(heart, button) {
-  if ([...heart.classList].includes('is-liked')) {
-    setTimeout(
-      () => (button.querySelector('.button__text').textContent = 'Unlike'),
-      500
-    );
-  } else {
-    setTimeout(
-      () => (button.querySelector('.button__text').textContent = 'Like'),
-      500
-    );
-  }
+  setTimeout(() => {
+    button.querySelector('.button__text').textContent =
+      heart.classList.contains('is-liked') ? 'Unlike' : 'Like';
+  }, 500);
 }
