@@ -17,6 +17,18 @@ jobs:
         run: exit 1
         if: ${{github.event.repository.private}}
       - name: Tests
-        uses: Yandex-Practicum/test-project-action@v1
-        with:
-          project: 'zakrivayuschiy-teg-ad'
+        # The official modal test uses page.$x, removed in Puppeteer 22.
+        # Keep the official image and tests; pin only their browser dependency.
+        run: |
+          docker run --rm -i \
+            --volume "$GITHUB_WORKSPACE:/project/code:ro" \
+            --workdir /project \
+            practicumweb/gha-verstka-checker:main \
+            bash -se <<'CHECKER'
+          cat > package.json <<'PACKAGE'
+          {"private":true,"overrides":{"puppeteer":"21.11.0"}}
+          PACKAGE
+          make setup PROJECT_NAME=zakrivayuschiy-teg-ad
+          npm ls puppeteer
+          make test
+          CHECKER

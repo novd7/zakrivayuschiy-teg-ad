@@ -179,9 +179,6 @@
 
 .button:focus {
   outline: none;
-}
-
-.button:focus-visible {
   box-shadow: 2px 2px 0 var(--accent-color, #000);
 }
 
@@ -234,6 +231,7 @@
 }
 
 .dialog {
+  display: none;
   inline-size: min(353px, calc(100% - 34px));
   max-inline-size: none;
   border: 2px solid var(--accent-color, #000);
